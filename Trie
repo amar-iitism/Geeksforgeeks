@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct trie
+{
+  struct trie* child[26];
+  bool isend;
+};
+
+struct trie* newNode()
+{
+    struct trie* temp=new trie();
+    for(int i=0;i<26;i++)
+    temp->child[i]=0;
+    temp->isend=false;
+    return temp;
+}
+
+int findl(struct trie* root,string s)
+{   struct trie* temp=root;
+    if(s.size()==0)
+    return 0;
+    for(int i=0;i<s.size();i++)
+    {
+        int xd=s[i]-'a';
+        if(temp->child[xd]==NULL)
+        return 0;
+        temp=temp->child[xd];
+    }
+    if(temp->isend==false)
+    return 0;
+    return 1;
+}
+
+
+void insert(struct trie* root,string s)
+{
+    struct trie* temp=root;
+    for(int i=0;i<s.size();i++)
+    {
+        int td=s[i]-'a';
+        if(temp->child[td]==NULL)
+        temp->child[td]=newNode();
+        temp=temp->child[td];
+    }
+    temp->isend=true;
+}
+
+
+int main()
+{
+  int t;
+  cin>>t;
+  while(t--)
+  {
+      int n;
+      cin>>n;
+      struct trie* root=newNode();
+      for(int i=0;i<n;i++)
+      {
+          string s;
+          cin>>s;
+          insert(root,s);
+      }
+      string s;
+      cin>>s;
+      int ans= findl(root,s);
+      cout<<ans<<endl;
+  }
+}
